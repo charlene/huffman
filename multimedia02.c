@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #pragma pack(1)
 typedef struct BMPheader{
@@ -29,10 +30,19 @@ typedef struct BMPheader{
 #pragma pack(0)
 
 typedef struct node{
-	char w;
-	float rate;
+	char w; //value of gray level = 0-255
+	float rate; //count of the gray level
 	struct node *left,*right;
 }Node;
+
+static int cmp(const void *p1, const void *p2)
+{
+	/* The actual arguments to this function are "pointers to
+	   pointers to char", but strcmp(3) arguments are "pointers
+	   to char", hence the following cast plus dereference */
+
+	return ((unsigned int)p1 > (unsigned int)p2);
+}
 
 int main(){
 
@@ -40,10 +50,11 @@ int main(){
 	char *picBuf1, *picBuf2; // 1 byte of pexil
 	int picCount1[256];
 	int picCount2[256];
+	int ori_picCount1[256];
 	BMPheader headerBuf;
 	int i;
 	long FileSize, ImgSize, ImgOffset;
-	
+
 	fp1 = fopen("test1.bmp","rb");
 	fp2 = fopen("test2.bmp","rb");
 
@@ -77,12 +88,14 @@ int main(){
 		picCount2[ (int)picBuf2[i] ]++;
 	}
 
-	int total1,total2;
-	for( i=0 ; i<256 ;i++){
-		total1 += picCount1[i];
-		total2 += picCount2[i];
-	}
-	printf("total1 = %d\n total2 = %d\n",ta
+	memcpy(picCount1, ori_picCount1, sizeof(picCount1));
+
+	qsort(picCount1, 256, sizeof(picCount1[1]), cmp);
+
+
+	//Node *list;
+
+
 
 	
 	//printf("1   , %d\n", picCount1[1]);
