@@ -1,0 +1,3 @@
+1. atoi參數是 char* 而 picBuf[i] 是 char
+2. picBuf1 使用前要先 malloc
+3. 不用呼叫 atoi 因為檔案存在點腦就是 integer 了 不是ascii
